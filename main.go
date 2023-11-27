@@ -7,13 +7,14 @@ import (
 )
 
 func IndexHandler(c *gin.Context) {
+	name := c.Params.ByName("name")
 	c.JSON(http.StatusOK, gin.H{
-		"message": "hello world",
+		"message": "hello " + name,
 	})
 }
 
 func main() {
 	router := gin.Default()
-	router.GET("/", IndexHandler)
+	router.GET("/:name", IndexHandler)
 	router.Run()
 }
