@@ -24,6 +24,7 @@ func main() {
 	router.GET("/recipes", ListRecipesHandler)
 	router.PUT("/recipes/:id", UpdateRecipeHandler)
 	router.DELETE("/recipes/:id", DeleteRecipeHandler)
+	router.GET("/recipes/search", SearchRecipeHandler)
 	router.Run()
 }
 
@@ -103,4 +104,24 @@ func DeleteRecipeHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"message": "Recipe has been deleted",
 	})
+}
+
+func SearchRecipeHandler(c *gin.Context) {
+	tag := c.Query("tag")
+	listOfRecipes := make([]Recipe, 0)
+
+	for _, recipe := range recipes {
+		found := false
+		for _, t := range recipe.Tags {
+			if t == tag {
+				found = true
+			}
+		}
+		if found {
+			listOfRecipes = append(listOfRecipes, recipe)
+
+		}
+	}
+
+	c.JSON(http.StatusOK, listOfRecipes)
 }
