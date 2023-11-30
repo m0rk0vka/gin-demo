@@ -34,6 +34,9 @@
         "responses": {
           "200": {
             "description": "Successful operation"
+          },
+          "500": {
+            "description": "Error while executing find comand to collection"
           }
         }
       },
@@ -78,6 +81,9 @@
         "responses": {
           "200": {
             "description": "successful operation"
+          },
+          "500": {
+            "description": "error while executing find command on collection"
           }
         }
       }
@@ -108,8 +114,8 @@
           "400": {
             "description": "invalid input"
           },
-          "404": {
-            "description": "invalid recipe id"
+          "500": {
+            "description": "error while update db"
           }
         }
       },
@@ -135,8 +141,8 @@
           "200": {
             "description": "successful operation"
           },
-          "404": {
-            "description": "invalid recipe id"
+          "500": {
+            "description": "error while delete recipe"
           }
         }
       }
