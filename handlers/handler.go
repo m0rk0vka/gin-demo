@@ -198,6 +198,29 @@ func (handler *RecipesHandler) DeleteRecipeHandler(c *gin.Context) {
 	})
 }
 
+func (handler *RecipesHandler) GetOneRecipeHandler(c *gin.Context) {
+	id := c.Params.ByName("id")
+	objectId, _ := primitive.ObjectIDFromHex(id)
+	filter := bson.M{"_id": objectId}
+	var recipe models.Recipe
+	if err := handler.collection.FindOne(handler.ctx, filter).Decode(&recipe); err != nil {
+		// ErrNoDocuments means that the filter did not match any documents in
+		// the collection.
+		if err == mongo.ErrNoDocuments {
+			c.JSON(http.StatusNotFound, gin.H{
+				"error": err.Error(),
+			})
+			return
+		}
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, recipe)
+}
+
 // swagger:operation GET /recipes/search recipes findRecipe
 // Search reipes based on tag
 // ---
